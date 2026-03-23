@@ -5,10 +5,14 @@
 import { Injectable } from '@nestjs/common';
 import { AuthRepository } from 'src/repositories/auth-repository';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthUseCase {
-  constructor(private authRepository: AuthRepository) {}
+  constructor(
+    private authRepository: AuthRepository,
+    private jwtService: JwtService,
+  ) {}
 
   async register(email: string, password: string) {
     const existingUser = await this.authRepository.findByEmail(email);
@@ -26,7 +30,24 @@ export class AuthUseCase {
     };
   }
 
-  login() {
-    return 'Hello World!';
+  async login(email: string, password: string) {
+    const user = await this.authRepository.findByEmail(email);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      throw new Error('Wrong password');
+    }
+
+    const payload = { sub: user.id, email: user.email };
+
+    return {
+      user: { id: user.id, email: user.email },
+      accessToken: await this.jwtService.signAsync(payload),
+    };
   }
 }

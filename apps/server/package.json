@@ -20,6 +20,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@bull-board/api": "^6.20.6",
+    "@bull-board/express": "^6.20.6",
+    "@bull-board/nestjs": "^6.20.6",
+    "@nestjs/bullmq": "^11.0.4",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.3",
     "@nestjs/core": "^11.0.1",
@@ -28,11 +32,13 @@
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/client": "^6.0.0",
     "bcrypt": "^6.0.0",
+    "bullmq": "^5.71.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.2",
+    "resend": "^6.9.4",
     "rxjs": "^7.8.1",
     "zod": "^4.3.6"
   },

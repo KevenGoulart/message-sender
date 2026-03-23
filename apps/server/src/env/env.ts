@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { z } from 'zod';
 
 export const envSchema = z.object({
@@ -10,6 +6,9 @@ export const envSchema = z.object({
     .string()
     .optional()
     .default('postgresql://postgres:postgres@localhost:5432/message_sender'),
+  JWT_SECRET: z.string(),
+  RESEND_API_KEY: z.string().optional(),
+  REDIS_HOST: z.string().default('localhost'),
 });
 
 export type Env = z.infer<typeof envSchema>;

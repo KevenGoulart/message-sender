@@ -20,7 +20,7 @@ export class AppController {
   }
 
   @Post('login')
-  login() {
-    return this.authUseCase.login();
+  login(@Body() body: RegisterDto) {
+    return this.authUseCase.login(body.email, body.password);
   }
 }

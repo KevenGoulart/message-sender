@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
 import { Module } from '@nestjs/common';
 import { AppController } from './controllers/auth.controller';
 import { AuthUseCase } from './use-cases/auth';
@@ -10,6 +6,13 @@ import { PrismaModule } from './prisma/prisma.module';
 import { EnvModule } from './env/env.module';
 import { envSchema } from './env/env';
 import { ConfigModule } from '@nestjs/config/dist/config.module';
+import { JwtModule } from '@nestjs/jwt';
+import { EmailController } from './controllers/email.controller';
+import { BullmqModule } from './schedules/bullmq/bullmq.module';
+import { EMAIL_QUEUE } from './jobs/email.processor';
+import { BullBoardModule } from '@bull-board/nestjs';
+import { ExpressAdapter } from '@bull-board/express';
+import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 
 @Module({
   imports: [
@@ -19,8 +22,22 @@ import { ConfigModule } from '@nestjs/config/dist/config.module';
     }),
     EnvModule,
     PrismaModule,
+    BullmqModule,
+    BullBoardModule.forRoot({
+      route: '/queues',
+      adapter: ExpressAdapter,
+    }),
+    BullBoardModule.forFeature({
+      name: EMAIL_QUEUE,
+      adapter: BullMQAdapter,
+    }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '24h' },
+    }),
   ],
-  controllers: [AppController],
+  controllers: [AppController, EmailController],
   providers: [AuthUseCase, AuthRepository],
 })
 export class AppModule {}
