@@ -9,10 +9,6 @@ import { ConfigModule } from '@nestjs/config/dist/config.module';
 import { JwtModule } from '@nestjs/jwt';
 import { EmailController } from './controllers/email.controller';
 import { BullmqModule } from './schedules/bullmq/bullmq.module';
-import { EMAIL_QUEUE } from './jobs/email.processor';
-import { BullBoardModule } from '@bull-board/nestjs';
-import { ExpressAdapter } from '@bull-board/express';
-import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 
 @Module({
   imports: [
@@ -23,14 +19,6 @@ import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
     EnvModule,
     PrismaModule,
     BullmqModule,
-    BullBoardModule.forRoot({
-      route: '/queues',
-      adapter: ExpressAdapter,
-    }),
-    BullBoardModule.forFeature({
-      name: EMAIL_QUEUE,
-      adapter: BullMQAdapter,
-    }),
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,

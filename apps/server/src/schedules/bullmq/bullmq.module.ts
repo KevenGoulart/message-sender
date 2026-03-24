@@ -5,6 +5,9 @@ import { EmailUseCase } from 'src/use-cases/email';
 import { EmailProcessor } from 'src/jobs/email.processor';
 import { EMAIL_QUEUE } from 'src/jobs/email.processor';
 import { BullModule } from '@nestjs/bullmq';
+import { BullBoardModule } from '@bull-board/nestjs';
+import { ExpressAdapter } from '@bull-board/express';
+import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 
 @Module({
   imports: [
@@ -14,6 +17,14 @@ import { BullModule } from '@nestjs/bullmq';
         host: process.env.REDIS_HOST,
         port: 6379,
       },
+    }),
+    BullBoardModule.forRoot({
+      route: '/queues',
+      adapter: ExpressAdapter,
+    }),
+    BullBoardModule.forFeature({
+      name: EMAIL_QUEUE,
+      adapter: BullMQAdapter,
     }),
     BullModule.registerQueue({ name: EMAIL_QUEUE }),
   ],
