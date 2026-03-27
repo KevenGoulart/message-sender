@@ -15,9 +15,9 @@ export default function Register() {
   };
 
   return (
-    <div className="bg-slate-300 min-h-screen">
+    <div className="bg-slate-600 min-h-screen">
       <div className="w-full flex flex-col gap-6 justify-center items-center">
-        <div className="bg-slate-400 p-4 rounded-2xl gap-12 mt-6 mx-auto">
+        <div className="bg-slate-500 p-4 rounded-2xl gap-12 mt-6 mx-auto">
           <h1 className="text-4xl mb-2 text-slate-100 font-semibold">
             Cadastro
           </h1>
@@ -38,7 +38,7 @@ export default function Register() {
 
             <button
               type="submit"
-              className="bg-purple-700 text-slate-100 p-2 font-semibold rounded-xl cursor-pointer hover:bg-purple-600"
+              className="bg-purple-800 text-slate-100 p-2 font-semibold rounded-xl cursor-pointer hover:bg-purple-700"
             >
               Cadastro
             </button>

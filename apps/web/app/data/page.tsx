@@ -32,7 +32,7 @@ export default function Data() {
 
   return (
     <div className="bg-slate-800 min-h-screen flex">
-      <div className="w-[50%]">
+      <div className="w-[40%] ml-auto">
         <div className="flex justify-center items-center gap-2 mt-8">
           <h1 className="text-5xl">Envie um email</h1>
         </div>
@@ -66,7 +66,8 @@ export default function Data() {
           </form>
         </div>
       </div>
-      <div className="w-[50%]">
+      <div className="bg-slate-400 h-screen w-px" />
+      <div className="w-[40%] mr-auto">
         <div className="flex flex-col justify-center items-center gap-2 mt-8">
           <h1 className="text-5xl">Histórico de Emails</h1>
 

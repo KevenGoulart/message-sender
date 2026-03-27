@@ -1,7 +1,6 @@
 "use client";
 
 import api from "@/lib/axios";
-import { redirect } from "next/navigation";
 import { FormEvent } from "react";
 
 export default function Home() {
@@ -16,13 +15,13 @@ export default function Home() {
 
     localStorage.setItem("token-MS", response.data.accessToken);
 
-    redirect("/data");
+    window.location.href = "/data";
   };
 
   return (
-    <div className="bg-slate-300 min-h-screen">
-      <div className="w-full flex flex-col gap-6 justify-center items-center">
-        <div className="flex flex-col bg-slate-400 p-4 rounded-2xl mt-6">
+    <div className="bg-slate-600 min-h-screen">
+      <div className="w-full flex flex-col gap-3 justify-center items-center">
+        <div className="flex flex-col bg-slate-500 p-4 rounded-2xl mt-6">
           <h1 className="text-4xl mb-2 text-slate-100 font-semibold">Login</h1>
 
           <form onSubmit={handleLogin} className="flex flex-col gap-4">
@@ -41,16 +40,16 @@ export default function Home() {
 
             <button
               type="submit"
-              className="bg-purple-700 text-slate-100 p-2 font-semibold rounded-xl cursor-pointer hover:bg-purple-600"
+              className="bg-purple-800 text-slate-100 p-2 font-semibold rounded-xl cursor-pointer hover:bg-purple-700"
             >
               Entrar
             </button>
           </form>
         </div>
 
-        <p className="text-slate-500">
+        <p className="text-slate-400">
           Não tem uma conta?{" "}
-          <a href="/register" className="text-purple-600 hover:underline">
+          <a href="/register" className="text-purple-500 hover:underline">
             Cadastre-se
           </a>
         </p>
