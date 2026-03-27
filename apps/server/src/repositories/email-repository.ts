@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Resend } from 'resend';
+import { PrismaService } from 'src/prisma/prisma.service';
+
 @Injectable()
 export class EmailRepository {
   private resend: Resend;
 
-  constructor() {
+  constructor(private prisma: PrismaService) {
     this.resend = new Resend(process.env.RESEND_API_KEY);
   }
 
@@ -21,5 +23,20 @@ export class EmailRepository {
     }
 
     console.log('Email sent successfully:', data);
+  }
+
+  async saveEmailHistory(sentTo: string, subject: string, body: string) {
+    await this.prisma.emailHistory.create({
+      data: {
+        sentTo,
+        subject,
+        body,
+      },
+    });
+  }
+
+  async getEmailHistory() {
+    const emailHistory = await this.prisma.emailHistory.findMany();
+    return emailHistory;
   }
 }

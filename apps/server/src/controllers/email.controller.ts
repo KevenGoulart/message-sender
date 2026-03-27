@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { IsEmail, IsString } from 'class-validator';
 import { EmailUseCase } from 'src/use-cases/email';
 
@@ -21,4 +21,15 @@ export class EmailController {
   sendEmail(@Body() body: SendEmailDto) {
     return this.emailUseCase.sendEmail(body.to, body.subject, body.html);
   }
+
+  @Get('history')
+  getEmailHistory() {
+    const data = this.emailUseCase.getEmailHistory();
+    return data;
+  }
+
+  // @Post('history')
+  // saveEmailHistory(@Body() body: SendEmailDto) {
+  //   return this.emailUseCase.saveEmailHistory(body.to, body.subject, body.html);
+  // }
 }

@@ -9,6 +9,8 @@ import { ConfigModule } from '@nestjs/config/dist/config.module';
 import { JwtModule } from '@nestjs/jwt';
 import { EmailController } from './controllers/email.controller';
 import { BullmqModule } from './schedules/bullmq/bullmq.module';
+import { EmailUseCase } from './use-cases/email';
+import { EmailRepository } from './repositories/email-repository';
 
 @Module({
   imports: [
@@ -26,6 +28,6 @@ import { BullmqModule } from './schedules/bullmq/bullmq.module';
     }),
   ],
   controllers: [AppController, EmailController],
-  providers: [AuthUseCase, AuthRepository],
+  providers: [AuthUseCase, AuthRepository, EmailUseCase, EmailRepository],
 })
 export class AppModule {}
