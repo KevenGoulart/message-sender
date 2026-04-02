@@ -1,7 +1,7 @@
 import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
 import { Queue } from 'bullmq';
-import { EMAIL_QUEUE } from 'src/jobs/email.processor';
+import { EMAIL_QUEUE } from 'src/schedules/bullmq/jobs/email.processor';
 import { EmailRepository } from 'src/repositories/email-repository';
 
 @Injectable()
@@ -21,9 +21,4 @@ export class EmailUseCase {
     const emailHistory = await this.emailRepository.getEmailHistory();
     return emailHistory;
   }
-
-  // async saveEmailHistory(sentTo: string, subject: string, body: string) {
-  //   await this.emailRepository.saveEmailHistory(sentTo, subject, body);
-  //   return { message: 'Email history saved successfully' };
-  // }
 }

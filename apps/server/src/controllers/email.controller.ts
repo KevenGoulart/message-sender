@@ -27,9 +27,4 @@ export class EmailController {
     const data = this.emailUseCase.getEmailHistory();
     return data;
   }
-
-  // @Post('history')
-  // saveEmailHistory(@Body() body: SendEmailDto) {
-  //   return this.emailUseCase.saveEmailHistory(body.to, body.subject, body.html);
-  // }
 }

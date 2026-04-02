@@ -15,7 +15,7 @@ export default function Home() {
 
     localStorage.setItem("token-MS", response.data.accessToken);
 
-    window.location.href = "/data";
+    window.location.href = "/dashboard";
   };
 
   return (

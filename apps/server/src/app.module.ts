@@ -11,6 +11,12 @@ import { EmailController } from './controllers/email.controller';
 import { BullmqModule } from './schedules/bullmq/bullmq.module';
 import { EmailUseCase } from './use-cases/email';
 import { EmailRepository } from './repositories/email-repository';
+import { GroupController } from './controllers/group.controller';
+import { GroupRepository } from './repositories/group-repository';
+import { GroupUseCase } from './use-cases/group';
+import { TemplateController } from './controllers/template.controller';
+import { TemplateUseCase } from './use-cases/template';
+import { TemplateRepository } from './repositories/template-repository';
 
 @Module({
   imports: [
@@ -27,7 +33,21 @@ import { EmailRepository } from './repositories/email-repository';
       signOptions: { expiresIn: '24h' },
     }),
   ],
-  controllers: [AppController, EmailController],
-  providers: [AuthUseCase, AuthRepository, EmailUseCase, EmailRepository],
+  controllers: [
+    AppController,
+    EmailController,
+    GroupController,
+    TemplateController,
+  ],
+  providers: [
+    AuthUseCase,
+    AuthRepository,
+    EmailUseCase,
+    EmailRepository,
+    GroupRepository,
+    GroupUseCase,
+    TemplateUseCase,
+    TemplateRepository,
+  ],
 })
 export class AppModule {}

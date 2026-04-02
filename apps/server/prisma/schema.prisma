@@ -21,3 +21,33 @@ model EmailHistory {
   subject String
   body    String
 }
+
+model Group {
+  id        String            @id @default(uuid())
+  name      String
+  createdAt DateTime          @default(now())
+  receiver  ReceiversGroups[]
+}
+
+model Receiver {
+  id     String            @id @default(uuid())
+  email  String            @unique
+  name   String
+  groups ReceiversGroups[]
+}
+
+model ReceiversGroups {
+  groupId    String
+  receiverId String
+  group      Group     @relation(fields: [groupId], references: [id])
+  receiver   Receiver? @relation(fields: [receiverId], references: [id])
+
+  @@id([groupId, receiverId])
+}
+
+model Template {
+  id        String   @id @default(uuid())
+  name      String
+  content   String
+  createdAt DateTime @default(now())
+}

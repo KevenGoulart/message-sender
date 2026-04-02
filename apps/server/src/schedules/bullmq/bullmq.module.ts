@@ -1,8 +1,8 @@
 import { EnvModule } from 'src/env/env.module';
 import { Module } from '@nestjs/common';
 import { EmailRepository } from 'src/repositories/email-repository';
-import { EmailProcessor } from 'src/jobs/email.processor';
-import { EMAIL_QUEUE } from 'src/jobs/email.processor';
+import { EmailProcessor } from 'src/schedules/bullmq/jobs/email.processor';
+import { EMAIL_QUEUE } from 'src/schedules/bullmq/jobs/email.processor';
 import { BullModule } from '@nestjs/bullmq';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { ExpressAdapter } from '@bull-board/express';

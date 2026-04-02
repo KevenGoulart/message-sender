@@ -19,7 +19,7 @@ export default function Header() {
 
   return (
     <div className="bg-slate-700 p-4 flex">
-      <Link href="/" className="text-3xl text-white ml-12">
+      <Link href="/" className="text-3xl text-white ml-8">
         Message Sender
       </Link>
       <div className="flex items-center gap-2 text-2xl ml-auto">
@@ -34,6 +34,11 @@ export default function Header() {
             <IoPersonCircleSharp size={44} className="ml-auto cursor-pointer" />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-2">
+            <DropdownMenuItem asChild>
+              <Link href="/profile" className="w-full font-semibold">
+                Perfil
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <button
                 onClick={() => logout()}
