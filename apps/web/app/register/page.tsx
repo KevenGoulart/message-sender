@@ -2,6 +2,8 @@
 
 import { FormEvent } from "react";
 import api from "@/lib/axios";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function Register() {
   const handleRegister = (e: FormEvent<HTMLFormElement>) => {
@@ -15,33 +17,30 @@ export default function Register() {
   };
 
   return (
-    <div className="bg-slate-600 min-h-screen">
+    <div className="bg-slate-800 min-h-screen">
       <div className="w-full flex flex-col gap-6 justify-center items-center">
-        <div className="bg-slate-500 p-4 rounded-2xl gap-12 mt-6 mx-auto">
+        <div className="bg-slate-700 p-4 rounded-2xl gap-12 mt-6 mx-auto">
           <h1 className="text-4xl mb-2 text-slate-100 font-semibold">
             Cadastro
           </h1>
 
-          <form onSubmit={handleRegister} className="flex flex-col gap-4">
-            <input
+          <form onSubmit={handleRegister} className="flex flex-col gap-2">
+            <Input
               name="email"
               type="email"
               placeholder="Email"
               className="p-2 rounded-xl bg-zinc-700 text-white focus:outline-none"
             />
-            <input
+            <Input
               name="password"
               type="password"
               placeholder="Senha"
               className="p-2 rounded-xl bg-zinc-700 text-white focus:outline-none"
             />
 
-            <button
-              type="submit"
-              className="bg-purple-800 text-slate-100 p-2 font-semibold rounded-xl cursor-pointer hover:bg-purple-700"
-            >
+            <Button type="submit" className="p-2 font-semibold cursor-pointer">
               Cadastro
-            </button>
+            </Button>
           </form>
         </div>
       </div>

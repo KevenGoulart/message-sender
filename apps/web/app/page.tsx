@@ -1,9 +1,21 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import api from "@/lib/axios";
-import { FormEvent } from "react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { FormEvent, useEffect } from "react";
 
 export default function Home() {
+  useEffect(() => {
+    const token = localStorage.getItem("token-MS");
+
+    if (token != null) {
+      redirect("/dashboard");
+    }
+  });
+
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -19,39 +31,36 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-slate-600 min-h-screen">
+    <div className="bg-slate-800 min-h-screen">
       <div className="w-full flex flex-col gap-3 justify-center items-center">
-        <div className="flex flex-col bg-slate-500 p-4 rounded-2xl mt-6">
+        <div className="flex flex-col bg-slate-700 p-4 rounded-2xl mt-6">
           <h1 className="text-4xl mb-2 text-slate-100 font-semibold">Login</h1>
 
-          <form onSubmit={handleLogin} className="flex flex-col gap-4">
-            <input
+          <form onSubmit={handleLogin} className="flex flex-col gap-2">
+            <Input
               name="email"
               type="email"
               placeholder="Email"
-              className="p-3 rounded-xl bg-zinc-700 text-white focus:outline-none"
+              className="p-3 rounded-md bg-zinc-700 text-white focus:outline-none"
             />
-            <input
+            <Input
               name="password"
               type="password"
               placeholder="Senha"
-              className="p-3 rounded-xl bg-zinc-700 text-white focus:outline-none"
+              className="p-3 rounded-md bg-zinc-700 text-white focus:outline-none"
             />
 
-            <button
-              type="submit"
-              className="bg-purple-800 text-slate-100 p-2 font-semibold rounded-xl cursor-pointer hover:bg-purple-700"
-            >
+            <Button type="submit" className="p-2 font-semibold cursor-pointer">
               Entrar
-            </button>
+            </Button>
           </form>
         </div>
 
         <p className="text-slate-400">
           Não tem uma conta?{" "}
-          <a href="/register" className="text-purple-500 hover:underline">
+          <Link href="/register" className="text-primary underline">
             Cadastre-se
-          </a>
+          </Link>
         </p>
       </div>
     </div>

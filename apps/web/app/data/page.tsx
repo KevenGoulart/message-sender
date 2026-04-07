@@ -1,7 +1,17 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import api from "@/lib/axios";
 import { FormEvent, useEffect, useState } from "react";
+
+interface EmailProps {
+  id: string;
+  sentTo: string;
+  subject: string;
+  body: string;
+}
 
 export default function Data() {
   const [emailHistory, setEmailHistory] = useState([]);
@@ -37,32 +47,32 @@ export default function Data() {
           <h1 className="text-5xl">Envie um email</h1>
         </div>
         <div className="mt-8 max-w-[50%] mx-auto">
-          <form onSubmit={submitEmail} className="flex flex-col gap-4 mt-8">
-            <input
+          <form onSubmit={submitEmail} className="flex flex-col gap-2 mt-8">
+            <Input
               name="email"
               type="email"
               placeholder="Email"
-              className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-purple-700"
+              className="border border-gray-700 rounded-md p-2"
             />
 
-            <input
+            <Input
               name="subject"
               placeholder="Assunto"
-              className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-purple-700"
+              className="border border-gray-700 rounded-md p-2"
             />
 
-            <textarea
+            <Textarea
               name="html"
               placeholder="Conteúdo"
-              className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-purple-700"
+              className="border border-gray-700 rounded-md p-2"
             />
 
-            <button
+            <Button
               type="submit"
-              className="bg-purple-700 font-semibold text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors cursor-pointer"
+              className="text-lg font-semibold cursor-pointer h-11"
             >
               Enviar Email
-            </button>
+            </Button>
           </form>
         </div>
       </div>
@@ -71,18 +81,18 @@ export default function Data() {
         <div className="flex flex-col justify-center items-center gap-2 mt-8">
           <h1 className="text-5xl">Histórico de Emails</h1>
 
-          {emailHistory?.toReversed().map((email: any) => (
-            <div key={email.id} className="bg-gray-700 rounded-xl p-3 mt-2">
-              <p>
+          {emailHistory?.toReversed().map((email: EmailProps) => (
+            <ul key={email.id} className="bg-slate-900 rounded-xl p-2 mt-1">
+              <li>
                 <strong>Para:</strong> {email.sentTo}
-              </p>
-              <p>
+              </li>
+              <li>
                 <strong>Assunto:</strong> {email.subject}
-              </p>
-              <p>
+              </li>
+              <li>
                 <strong>Conteúdo:</strong> {email.body}
-              </p>
-            </div>
+              </li>
+            </ul>
           ))}
         </div>
       </div>
