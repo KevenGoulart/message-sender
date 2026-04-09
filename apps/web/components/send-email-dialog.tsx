@@ -11,6 +11,7 @@ import api from "@/lib/axios";
 import { GroupProps, TemplateProps } from "@/app/dashboard/page";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { Item, ItemContent, ItemDescription, ItemTitle } from "./ui/item";
 
 interface SendEmailDialogProps {
   open: boolean;
@@ -30,8 +31,6 @@ export default function SendEmailDialog({
 
   const handleSendEmail = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log("chamou");
 
     if (selectedTemplate != null) {
       const promises = group.receiver.map((member) =>
@@ -90,21 +89,20 @@ export default function SendEmailDialog({
             <ul className="mt-4">
               <h3>Templates:</h3>
               {templates.map((template: TemplateProps) => (
-                <span
+                <Item
                   key={template.id}
-                  className="w-full cursor-pointer"
+                  className={`${selectedTemplate?.id === template.id ? "bg-slate-900" : "bg-slate-700"} p-2 rounded-md text-center mt-1 cursor-pointer`}
                   onClick={() =>
                     setSelectedTemplate(
                       selectedTemplate?.id === template.id ? null : template,
                     )
                   }
                 >
-                  <p
-                    className={`${selectedTemplate?.id === template.id ? "bg-blue-950" : "bg-slate-700"} p-1 rounded-md text-sm text-center mt-1 cursor-pointer`}
-                  >
-                    {template.name} - {template.content}
-                  </p>
-                </span>
+                  <ItemContent>
+                    <ItemTitle>{template.name}</ItemTitle>
+                    <ItemDescription>{template.content}</ItemDescription>
+                  </ItemContent>
+                </Item>
               ))}
             </ul>
             <div className="flex justify-end mt-4">
@@ -120,7 +118,7 @@ export default function SendEmailDialog({
               </Button>
               <Button
                 type="submit"
-                className="px-4 py-2 rounded-md cursor-pointer bg-blue-900 hover:bg-blue-800 text-slate-100"
+                className="px-4 py-2 rounded-md cursor-pointer bg-primary hover:bg-primary/80"
                 onClick={() => {
                   onOpenChange(false);
                 }}

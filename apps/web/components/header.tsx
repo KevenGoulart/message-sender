@@ -18,7 +18,7 @@ export default function Header() {
   };
 
   return (
-    <div className="bg-slate-700 p-4 flex">
+    <div className="bg-slate-700/90 p-4 flex">
       <Link href="/" className="text-3xl text-white ml-8">
         Message Sender
       </Link>
