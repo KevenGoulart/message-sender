@@ -7,7 +7,6 @@ import SendEmailDialog from "@/components/send-email-dialog";
 import { templateColumns } from "@/components/templates-columns";
 import { DataTable } from "@/components/templates-table";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Item,
   ItemContent,

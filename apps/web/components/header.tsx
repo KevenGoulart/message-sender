@@ -19,9 +19,17 @@ export default function Header() {
 
   return (
     <div className="bg-slate-700/90 p-4 flex">
-      <Link href="/" className="text-3xl text-white ml-8">
-        Message Sender
-      </Link>
+      <div className="flex items-center gap-6 text-xl">
+        <Link href="/" className="text-4xl text-white ml-8">
+          Message Sender
+        </Link>
+        <Link href="/data" className="cursor-pointer hover:text-white/70">
+          Envio Individual
+        </Link>
+        <Link href="/dashboard" className="cursor-pointer hover:text-white/70">
+          Envio em Lote
+        </Link>
+      </div>
       <div className="flex items-center gap-2 text-2xl ml-auto">
         {token ? (
           <p className="text-green-600">Logado</p>
