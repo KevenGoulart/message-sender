@@ -7,6 +7,13 @@ export type TemplateColumns = {
   createdAt: Date;
 };
 
+export type HistoryColumns = {
+  id: string;
+  to: string;
+  name: string;
+  content: string;
+};
+
 import {
   ColumnDef,
   flexRender,

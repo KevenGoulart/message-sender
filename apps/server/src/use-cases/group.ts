@@ -13,6 +13,10 @@ export class GroupUseCase {
     await this.groupRepository.addToGroup(email, name, groupId);
   }
 
+  async removeFromGroup(email: string, groupId: string) {
+    await this.groupRepository.removeFromGroup(email, groupId);
+  }
+
   async findAllGroups() {
     const members = await this.groupRepository.findAllGroups();
     return members;

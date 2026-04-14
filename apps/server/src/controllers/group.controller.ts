@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { GroupUseCase } from 'src/use-cases/group';
 
@@ -20,6 +20,14 @@ class AddToGroupDto {
   name!: string;
 }
 
+class RemoveFromGroupDto {
+  @IsNotEmpty()
+  groupId!: string;
+
+  @IsEmail()
+  email!: string;
+}
+
 @Controller('group')
 export class GroupController {
   constructor(private readonly groupUseCase: GroupUseCase) {}
@@ -32,6 +40,11 @@ export class GroupController {
   @Post('add-to-group')
   addToGroup(@Body() body: AddToGroupDto) {
     return this.groupUseCase.addToGroup(body.email, body.name, body.groupId);
+  }
+
+  @Delete('remove-from-group')
+  removeFromGroup(@Body() body: RemoveFromGroupDto) {
+    return this.groupUseCase.removeFromGroup(body.email, body.groupId);
   }
 
   @Get('all')

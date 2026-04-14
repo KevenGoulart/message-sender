@@ -3,6 +3,7 @@
 import AddToGroupDialog from "@/components/add-to-group-dialog";
 import CreateGroupDialog from "@/components/create-group-dialog";
 import CreateTemplateDialog from "@/components/create-template-dialog";
+import DeleteMemberDialog from "@/components/delete-member-dialog";
 import SendEmailDialog from "@/components/send-email-dialog";
 import { templateColumns } from "@/components/templates-columns";
 import { DataTable } from "@/components/templates-table";
@@ -58,6 +59,7 @@ export default function Dashboard() {
   const [templateDialogOpen, setTemplateDialogOpen] = useState(false);
   const [groupDialogOpen, setGroupDialogOpen] = useState(false);
   const [addToGroupDialogOpen, setAddToGroupDialogOpen] = useState(false);
+  const [deleteMemberOpen, setDeleteMemberOpen] = useState(false);
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -120,16 +122,28 @@ export default function Dashboard() {
                         }}
                       />
                     </Item>
-                    <Button
-                      type="submit"
-                      onClick={() => {
-                        setAddToGroupDialogOpen(true);
-                      }}
-                      className="cursor-pointer p-2 rounded-lg"
-                    >
-                      Adicionar membros
-                    </Button>
-                    <ul className="mt-1">
+                    <div className="flex justify-center gap-2">
+                      <Button
+                        type="submit"
+                        onClick={() => {
+                          setAddToGroupDialogOpen(true);
+                        }}
+                        className="cursor-pointer p-2 rounded-lg"
+                      >
+                        Adicionar
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={() => {
+                          setSelectedGroup(group);
+                          setDeleteMemberOpen(true);
+                        }}
+                        className="cursor-pointer p-2 rounded-lg"
+                      >
+                        Remover
+                      </Button>
+                    </div>
+                    <ul>
                       {group.receiver.map((member) => (
                         <Item
                           key={member.receiver.id}
@@ -137,10 +151,14 @@ export default function Dashboard() {
                           className="border-white/10 mt-1"
                         >
                           <ItemContent>
-                            <ItemTitle>{member.receiver.name}</ItemTitle>
-                            <ItemDescription>
-                              {member.receiver.email}
-                            </ItemDescription>
+                            <div className="flex items-center">
+                              <div>
+                                <ItemTitle>{member.receiver.name}</ItemTitle>
+                                <ItemDescription>
+                                  {member.receiver.email}
+                                </ItemDescription>
+                              </div>
+                            </div>
                           </ItemContent>
                         </Item>
                       ))}
@@ -153,20 +171,23 @@ export default function Dashboard() {
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel>
-          <div className="ml-auto mr-4 flex gap-2 min-h-screen">
-            <div className="mx-auto mt-2">
+          <div className="ml-auto mr-4 flex flex-col gap-2 min-h-screen">
+            <div className="mx-auto mt-2 w-full">
               <div className="flex justify-center items-center gap-4 mb-2">
                 <h2 className="text-3xl text-center">Templates de Email</h2>
                 <Button
                   onClick={() => {
                     setTemplateDialogOpen(true);
                   }}
-                  className="cursor-pointer p-2 mt-1"
+                  className="cursor-pointer p-2"
                 >
                   Criar template
                 </Button>
               </div>
+              <Separator />
+            </div>
 
+            <div className="mx-8">
               <DataTable columns={templateColumns} data={templates} />
             </div>
           </div>
@@ -174,6 +195,11 @@ export default function Dashboard() {
         <AddToGroupDialog
           open={addToGroupDialogOpen}
           onOpenChange={setAddToGroupDialogOpen}
+          group={selectedGroup}
+        />
+        <DeleteMemberDialog
+          open={deleteMemberOpen}
+          onOpenChange={setDeleteMemberOpen}
           group={selectedGroup}
         />
         <CreateGroupDialog

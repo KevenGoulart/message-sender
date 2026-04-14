@@ -39,6 +39,25 @@ export class GroupRepository {
     });
   }
 
+  async removeFromGroup(email: string, groupId: string) {
+    const receiver = await this.prisma.receiver.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!receiver) {
+      throw new ConflictException('Receiver not found');
+    }
+
+    return this.prisma.receiversGroups.deleteMany({
+      where: {
+        groupId,
+        receiverId: receiver.id,
+      },
+    });
+  }
+
   findAllGroups() {
     return this.prisma.group.findMany({
       include: {
