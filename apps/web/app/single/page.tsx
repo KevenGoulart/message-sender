@@ -10,7 +10,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { Textarea } from "@/components/ui/textarea";
-import api from "@/lib/axios";
+import { fetchEmailHistory, sendEmail } from "@/services/email";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FormEvent } from "react";
 
@@ -19,18 +19,18 @@ export default function Data() {
 
   const { data: emailHistory } = useQuery({
     queryKey: ["emailHistory"],
-    queryFn: async () => api.get("/email/history").then((res) => res.data),
+    queryFn: async () => fetchEmailHistory(),
   });
 
   const submitEmail = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    await api.post("/email/send", {
-      to: formData.get("email"),
-      subject: formData.get("subject"),
-      html: formData.get("html"),
-    });
+    await sendEmail(
+      formData.get("email") as string,
+      formData.get("subject") as string,
+      formData.get("html") as string,
+    );
 
     queryClient.invalidateQueries({ queryKey: ["emailHistory"] });
   };

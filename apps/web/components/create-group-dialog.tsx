@@ -1,8 +1,8 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { FormEvent } from "react";
-import api from "@/lib/axios";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { createGroup } from "@/services/group";
 
 interface CreateGroupDialogProps {
   open: boolean;
@@ -18,9 +18,7 @@ export default function CreateGroupDialog({
 
     const formData = new FormData(e.currentTarget);
 
-    await api.post("/group/create", {
-      name: formData.get("name"),
-    });
+    await createGroup(formData.get("name") as string);
   };
 
   return (

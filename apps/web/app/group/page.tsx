@@ -20,30 +20,17 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
-import api from "@/lib/axios";
+import { fetchGroups } from "@/services/group";
+import { GroupProps } from "@/services/group/type";
+import { fetchTemplates } from "@/services/template";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
-
-export interface GroupProps {
-  id: string;
-  name: string;
-  receiver: {
-    receiverId: string;
-    receiver: ReceiverProps;
-  }[];
-}
 
 export interface ReceiverProps {
   id: string;
   email: string;
   name: string;
-}
-
-export interface TemplateProps {
-  id: string;
-  name: string;
-  content: string;
 }
 
 export default function Dashboard() {
@@ -61,12 +48,12 @@ export default function Dashboard() {
 
   const { data: groups } = useQuery({
     queryKey: ["groups"],
-    queryFn: async () => api.get("/group/all").then((res) => res.data),
+    queryFn: async () => fetchGroups(),
   });
 
   const { data: templates } = useQuery({
     queryKey: ["templates"],
-    queryFn: async () => api.get("/template/all").then((res) => res.data),
+    queryFn: async () => fetchTemplates(),
   });
 
   return (

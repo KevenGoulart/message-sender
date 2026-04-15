@@ -1,19 +1,19 @@
 "use client";
 
 import { FormEvent } from "react";
-import api from "@/lib/axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { registerUser } from "@/services/user";
 
 export default function Register() {
-  const handleRegister = (e: FormEvent<HTMLFormElement>) => {
+  const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    api.post("/users/register", {
-      email: formData.get("email"),
-      password: formData.get("password"),
-    });
+    await registerUser(
+      formData.get("email") as string,
+      formData.get("password") as string,
+    );
   };
 
   return (

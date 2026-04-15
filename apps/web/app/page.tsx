@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import api from "@/lib/axios";
+import { loginUser } from "@/services/user";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { FormEvent, useEffect } from "react";
@@ -20,10 +20,10 @@ export default function Home() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    const response = await api.post("/users/login", {
-      email: formData.get("email"),
-      password: formData.get("password"),
-    });
+    const response = await loginUser(
+      formData.get("email") as string,
+      formData.get("password") as string,
+    );
 
     localStorage.setItem("token-MS", response.data.accessToken);
 

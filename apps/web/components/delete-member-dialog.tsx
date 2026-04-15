@@ -1,9 +1,9 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { FormEvent } from "react";
-import api from "@/lib/axios";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { GroupProps } from "@/app/group/page";
+import { GroupProps } from "@/services/group/type";
+import { removeFromGroup } from "@/services/group";
 
 interface DeleteMemberDialogProps {
   open: boolean;
@@ -21,12 +21,7 @@ export default function DeleteMemberDialog({
 
     const formData = new FormData(e.currentTarget);
 
-    await api.delete("/group/remove-from-group", {
-      data: {
-        email: formData.get("removeFrom"),
-        groupId: group.id,
-      },
-    });
+    await removeFromGroup(formData.get("removeFrom") as string, group.id);
   };
 
   return (

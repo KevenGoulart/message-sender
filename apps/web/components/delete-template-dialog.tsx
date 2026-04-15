@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
-import api from "@/lib/axios";
 import { Button } from "./ui/button";
-import { TemplateProps } from "@/app/group/page";
+import { TemplateProps } from "@/services/template/type";
+import { deleteTemplate } from "@/services/template";
 
 interface DeleteTemplateDialogProps {
   open: boolean;
@@ -15,11 +15,7 @@ export default function DeleteTemplateDialog({
   template,
 }: DeleteTemplateDialogProps) {
   const handleDeleteTemplate = async (template: TemplateProps) => {
-    await api.delete("/template/delete", {
-      data: {
-        templateId: template.id,
-      },
-    });
+    await deleteTemplate(template.id);
   };
 
   return (

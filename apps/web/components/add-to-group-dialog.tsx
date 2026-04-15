@@ -1,10 +1,10 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { FormEvent } from "react";
-import api from "@/lib/axios";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { GroupProps } from "@/app/group/page";
 import { useQueryClient } from "@tanstack/react-query";
+import { GroupProps } from "@/services/group/type";
+import { addToGroup } from "@/services/group";
 
 interface AddToGroupDialogProps {
   open: boolean;
@@ -24,11 +24,11 @@ export default function AddToGroupDialog({
 
     const formData = new FormData(e.currentTarget);
 
-    await api.post("/group/add-to-group", {
-      name: formData.get("name"),
-      email: formData.get("addTo"),
-      groupId: group.id,
-    });
+    await addToGroup(
+      formData.get("name") as string,
+      formData.get("addTo") as string,
+      group.id,
+    );
 
     queryClient.invalidateQueries({ queryKey: ["groups"] });
   };

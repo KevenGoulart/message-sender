@@ -1,9 +1,9 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { FormEvent } from "react";
-import api from "@/lib/axios";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useQueryClient } from "@tanstack/react-query";
+import { createTemplate } from "@/services/template";
 
 interface CreateTemplateDialogProps {
   open: boolean;
@@ -21,10 +21,10 @@ export default function CreateTemplateDialog({
 
     const formData = new FormData(e.currentTarget);
 
-    await api.post("/template/create", {
-      name: formData.get("name"),
-      content: formData.get("content"),
-    });
+    await createTemplate(
+      formData.get("name") as string,
+      formData.get("content") as string,
+    );
 
     queryClient.invalidateQueries({ queryKey: ["templates"] });
   };

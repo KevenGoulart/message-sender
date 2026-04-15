@@ -7,11 +7,12 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 import { FormEvent } from "react";
-import api from "@/lib/axios";
-import { GroupProps, TemplateProps } from "@/app/group/page";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "./ui/item";
+import { GroupProps } from "@/services/group/type";
+import { TemplateProps } from "@/services/template/type";
+import { sendEmail } from "@/services/email";
 
 interface SendEmailDialogProps {
   open: boolean;
@@ -34,11 +35,11 @@ export default function SendEmailDialog({
 
     if (selectedTemplate != null) {
       const promises = group.receiver.map((member) =>
-        api.post("/email/send", {
-          to: member.receiver.email,
-          subject: selectedTemplate.name,
-          html: selectedTemplate.content,
-        }),
+        sendEmail(
+          member.receiver.email,
+          selectedTemplate.name,
+          selectedTemplate.content,
+        ),
       );
 
       await Promise.all(promises);
@@ -46,11 +47,11 @@ export default function SendEmailDialog({
       const formData = new FormData(e.currentTarget);
 
       const promises = group.receiver.map((member) =>
-        api.post("/email/send", {
-          to: member.receiver.email,
-          subject: formData.get("name"),
-          html: formData.get("content"),
-        }),
+        sendEmail(
+          member.receiver.email,
+          formData.get("name") as string,
+          formData.get("content") as string,
+        ),
       );
 
       await Promise.all(promises);

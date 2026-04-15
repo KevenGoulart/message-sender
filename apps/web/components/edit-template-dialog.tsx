@@ -1,9 +1,9 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { FormEvent } from "react";
-import api from "@/lib/axios";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { TemplateProps } from "@/app/group/page";
+import { TemplateProps } from "@/services/template/type";
+import { editTemplate } from "@/services/template";
 
 interface EditTemplateDialogProps {
   open: boolean;
@@ -21,11 +21,11 @@ export default function EditTemplateDialog({
 
     const formData = new FormData(e.currentTarget);
 
-    await api.put("/template/edit", {
-      templateId: template.id,
-      name: formData.get("name"),
-      content: formData.get("content"),
-    });
+    await editTemplate(
+      template.id,
+      formData.get("name") as string,
+      formData.get("content") as string,
+    );
   };
 
   return (
