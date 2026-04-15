@@ -10,12 +10,13 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
 import { redirect } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function Header() {
-  const token = localStorage.getItem("token-MS");
+  const token = Cookies.get("token-MS");
 
   const logout = () => {
-    localStorage.removeItem("token-MS");
+    Cookies.remove("token-MS");
     window.location.href = "/";
   };
 

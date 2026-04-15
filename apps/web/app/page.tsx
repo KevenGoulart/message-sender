@@ -3,13 +3,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { loginUser } from "@/services/user";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { FormEvent, useEffect } from "react";
 
 export default function Home() {
   useEffect(() => {
-    const token = localStorage.getItem("token-MS");
+    const token = Cookies.get("token-MS");
 
     if (token != null) {
       redirect("/group");
@@ -25,7 +26,7 @@ export default function Home() {
       formData.get("password") as string,
     );
 
-    localStorage.setItem("token-MS", response.data.accessToken);
+    Cookies.set("token-MS", response.data.accessToken, { expires: 7 });
 
     window.location.href = "/group";
   };
