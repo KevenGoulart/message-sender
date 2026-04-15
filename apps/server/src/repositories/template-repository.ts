@@ -11,15 +11,15 @@ export class TemplateRepository {
     });
   }
 
+  findAllTemplates() {
+    return this.prisma.template.findMany();
+  }
+
   editTemplate(templateId: string, name: string, content: string) {
     return this.prisma.template.update({
       where: { id: templateId },
       data: { name, content },
     });
-  }
-
-  findAllTemplates() {
-    return this.prisma.template.findMany();
   }
 
   deleteTemplate(templateId: string) {

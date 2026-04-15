@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { IoPersonCircleSharp } from "react-icons/io5";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
+import { redirect } from "next/navigation";
 
 export default function Header() {
   const token = localStorage.getItem("token-MS");
@@ -26,21 +26,18 @@ export default function Header() {
       </Link>
       <div className="flex items-center gap-2 text-2xl ml-auto">
         <div className="flex items-center gap-4 text-xl mr-4">
-          <Link href="/data" className="cursor-pointer hover:text-white/70">
+          <Link href="/single" className="cursor-pointer hover:text-white/70">
             Envio Individual
           </Link>
           <Separator orientation="vertical" className="h-8 bg-white/50" />
-          <Link
-            href="/dashboard"
-            className="cursor-pointer hover:text-white/70"
-          >
+          <Link href="/group" className="cursor-pointer hover:text-white/70">
             Envio em Lote
           </Link>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger>
             {token ? (
-              <Avatar size="lg">
+              <Avatar size="lg" className="cursor-pointer">
                 <AvatarImage src="https://avatars.githubusercontent.com/u/94140750?v=4" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
@@ -52,14 +49,25 @@ export default function Header() {
             )}
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-2">
-            <DropdownMenuItem asChild>
-              <button
-                onClick={() => logout()}
-                className="w-full cursor-pointer font-semibold"
-              >
-                Logout
-              </button>
-            </DropdownMenuItem>
+            {token ? (
+              <DropdownMenuItem asChild>
+                <button
+                  onClick={() => logout()}
+                  className="w-full cursor-pointer font-semibold"
+                >
+                  Logout
+                </button>
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem asChild>
+                <button
+                  onClick={() => redirect("/")}
+                  className="w-full cursor-pointer font-semibold"
+                >
+                  Login
+                </button>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

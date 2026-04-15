@@ -21,8 +21,9 @@ import {
 } from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import api from "@/lib/axios";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export interface GroupProps {
   id: string;
@@ -46,38 +47,27 @@ export interface TemplateProps {
 }
 
 export default function Dashboard() {
-  const [groups, setGroups] = useState([]);
-  const [templates, setTemplates] = useState([]);
-
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState<GroupProps>({
     id: "",
     name: "",
     receiver: [],
   });
 
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [templateDialogOpen, setTemplateDialogOpen] = useState(false);
   const [groupDialogOpen, setGroupDialogOpen] = useState(false);
   const [addToGroupDialogOpen, setAddToGroupDialogOpen] = useState(false);
-  const [deleteMemberOpen, setDeleteMemberOpen] = useState(false);
+  const [deleteMemberDialogOpen, setDeleteMemberDialogOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchGroups = async () => {
-      const response = await api.get("/group/all");
-      setGroups(response.data);
-    };
+  const { data: groups } = useQuery({
+    queryKey: ["groups"],
+    queryFn: async () => api.get("/group/all").then((res) => res.data),
+  });
 
-    fetchGroups();
-  }, []);
-
-  useEffect(() => {
-    const fetchTemplates = async () => {
-      const response = await api.get("/template/all");
-      setTemplates(response.data);
-    };
-
-    fetchTemplates();
-  }, []);
+  const { data: templates } = useQuery({
+    queryKey: ["templates"],
+    queryFn: async () => api.get("/template/all").then((res) => res.data),
+  });
 
   return (
     <div className="bg-slate-800 min-h-screen">
@@ -126,6 +116,7 @@ export default function Dashboard() {
                       <Button
                         type="submit"
                         onClick={() => {
+                          setSelectedGroup(group);
                           setAddToGroupDialogOpen(true);
                         }}
                         className="cursor-pointer p-2 rounded-lg"
@@ -136,7 +127,7 @@ export default function Dashboard() {
                         variant="destructive"
                         onClick={() => {
                           setSelectedGroup(group);
-                          setDeleteMemberOpen(true);
+                          setDeleteMemberDialogOpen(true);
                         }}
                         className="cursor-pointer p-2 rounded-lg"
                       >
@@ -188,7 +179,7 @@ export default function Dashboard() {
             </div>
 
             <div className="mx-8">
-              <DataTable columns={templateColumns} data={templates} />
+              <DataTable columns={templateColumns} data={templates ?? []} />
             </div>
           </div>
         </ResizablePanel>
@@ -198,8 +189,8 @@ export default function Dashboard() {
           group={selectedGroup}
         />
         <DeleteMemberDialog
-          open={deleteMemberOpen}
-          onOpenChange={setDeleteMemberOpen}
+          open={deleteMemberDialogOpen}
+          onOpenChange={setDeleteMemberDialogOpen}
           group={selectedGroup}
         />
         <CreateGroupDialog

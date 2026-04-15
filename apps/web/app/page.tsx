@@ -12,7 +12,7 @@ export default function Home() {
     const token = localStorage.getItem("token-MS");
 
     if (token != null) {
-      redirect("/dashboard");
+      redirect("/group");
     }
   });
 
@@ -27,7 +27,7 @@ export default function Home() {
 
     localStorage.setItem("token-MS", response.data.accessToken);
 
-    window.location.href = "/dashboard";
+    window.location.href = "/group";
   };
 
   return (

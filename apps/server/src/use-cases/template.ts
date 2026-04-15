@@ -9,13 +9,13 @@ export class TemplateUseCase {
     await this.templateRepository.createTemplate(name, content);
   }
 
-  async editTemplate(templateId: string, name: string, content: string) {
-    await this.templateRepository.editTemplate(templateId, name, content);
-  }
-
   async findAllTemplates() {
     const templates = await this.templateRepository.findAllTemplates();
     return templates;
+  }
+
+  async editTemplate(templateId: string, name: string, content: string) {
+    await this.templateRepository.editTemplate(templateId, name, content);
   }
 
   async deleteTemplate(templateId: string) {

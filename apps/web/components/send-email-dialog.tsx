@@ -8,7 +8,7 @@ import {
 } from "./ui/dialog";
 import { FormEvent } from "react";
 import api from "@/lib/axios";
-import { GroupProps, TemplateProps } from "@/app/dashboard/page";
+import { GroupProps, TemplateProps } from "@/app/group/page";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "./ui/item";
@@ -88,7 +88,7 @@ export default function SendEmailDialog({
 
             <ul className="mt-4">
               <h3>Templates:</h3>
-              {templates.map((template: TemplateProps) => (
+              {templates?.map((template: TemplateProps) => (
                 <Item
                   key={template.id}
                   className={`${selectedTemplate?.id === template.id ? "bg-slate-900" : "bg-slate-700"} p-2 rounded-md text-center mt-1 cursor-pointer`}

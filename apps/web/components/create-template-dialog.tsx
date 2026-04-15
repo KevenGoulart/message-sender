@@ -3,6 +3,7 @@ import { FormEvent } from "react";
 import api from "@/lib/axios";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface CreateTemplateDialogProps {
   open: boolean;
@@ -13,6 +14,8 @@ export default function CreateTemplateDialog({
   open,
   onOpenChange,
 }: CreateTemplateDialogProps) {
+  const queryClient = useQueryClient();
+
   const handleCreateTemplate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -22,6 +25,8 @@ export default function CreateTemplateDialog({
       name: formData.get("name"),
       content: formData.get("content"),
     });
+
+    queryClient.invalidateQueries({ queryKey: ["templates"] });
   };
 
   return (

@@ -13,6 +13,18 @@ export class GroupRepository {
     });
   }
 
+  findAllGroups() {
+    return this.prisma.group.findMany({
+      include: {
+        receiver: {
+          include: {
+            receiver: true,
+          },
+        },
+      },
+    });
+  }
+
   async addToGroup(email: string, name: string, groupId: string) {
     const existingReceiver = await this.prisma.receiver.findFirst({
       where: {
@@ -54,18 +66,6 @@ export class GroupRepository {
       where: {
         groupId,
         receiverId: receiver.id,
-      },
-    });
-  }
-
-  findAllGroups() {
-    return this.prisma.group.findMany({
-      include: {
-        receiver: {
-          include: {
-            receiver: true,
-          },
-        },
       },
     });
   }

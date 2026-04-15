@@ -3,7 +3,8 @@ import { FormEvent } from "react";
 import api from "@/lib/axios";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { GroupProps } from "@/app/dashboard/page";
+import { GroupProps } from "@/app/group/page";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface AddToGroupDialogProps {
   open: boolean;
@@ -16,6 +17,8 @@ export default function AddToGroupDialog({
   onOpenChange,
   group,
 }: AddToGroupDialogProps) {
+  const queryClient = useQueryClient();
+
   const handleAddToGroup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -26,6 +29,8 @@ export default function AddToGroupDialog({
       email: formData.get("addTo"),
       groupId: group.id,
     });
+
+    queryClient.invalidateQueries({ queryKey: ["groups"] });
   };
 
   return (

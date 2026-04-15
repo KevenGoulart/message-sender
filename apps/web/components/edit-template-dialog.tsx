@@ -3,7 +3,7 @@ import { FormEvent } from "react";
 import api from "@/lib/axios";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { TemplateProps } from "@/app/dashboard/page";
+import { TemplateProps } from "@/app/group/page";
 
 interface EditTemplateDialogProps {
   open: boolean;

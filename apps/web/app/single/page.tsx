@@ -9,24 +9,18 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import api from "@/lib/axios";
-import { FormEvent, useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { FormEvent } from "react";
 
 export default function Data() {
-  const [emailHistory, setEmailHistory] = useState([]);
+  const queryClient = useQueryClient();
 
-  const [newEmail, setNewEmail] = useState(false);
-
-  useEffect(() => {
-    const fetchEmailHistory = async () => {
-      const response = await api.get("/email/history");
-      setEmailHistory(response.data);
-    };
-
-    fetchEmailHistory();
-  }, [newEmail]);
+  const { data: emailHistory } = useQuery({
+    queryKey: ["emailHistory"],
+    queryFn: async () => api.get("/email/history").then((res) => res.data),
+  });
 
   const submitEmail = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,7 +32,7 @@ export default function Data() {
       html: formData.get("html"),
     });
 
-    setNewEmail((prev) => !prev);
+    queryClient.invalidateQueries({ queryKey: ["emailHistory"] });
   };
 
   return (
@@ -80,7 +74,7 @@ export default function Data() {
           <div className="flex flex-col justify-center items-center gap-2 mt-4">
             <h1 className="text-3xl">Histórico de Emails</h1>
 
-            <DataTable columns={historyColumns} data={emailHistory} />
+            <DataTable columns={historyColumns} data={emailHistory ?? []} />
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>

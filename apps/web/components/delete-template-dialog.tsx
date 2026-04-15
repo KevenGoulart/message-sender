@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import api from "@/lib/axios";
 import { Button } from "./ui/button";
-import { TemplateProps } from "@/app/dashboard/page";
+import { TemplateProps } from "@/app/group/page";
 
 interface DeleteTemplateDialogProps {
   open: boolean;

@@ -4,13 +4,13 @@ import { EmailUseCase } from 'src/use-cases/email';
 
 class SendEmailDto {
   @IsEmail()
-  to: string;
+  to!: string;
 
   @IsString()
-  subject: string;
+  subject!: string;
 
   @IsString()
-  html: string;
+  html!: string;
 }
 
 @Controller('email')
