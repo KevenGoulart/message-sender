@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 import { GroupProps } from "@/services/group/type";
 import { addToGroup } from "@/services/group";
+import * as Sentry from "@sentry/nextjs";
 
 interface AddToGroupDialogProps {
   open: boolean;
@@ -24,11 +25,22 @@ export default function AddToGroupDialog({
 
     const formData = new FormData(e.currentTarget);
 
-    await addToGroup(
-      formData.get("name") as string,
-      formData.get("addTo") as string,
-      group.id,
-    );
+    try {
+      await addToGroup(
+        formData.get("name") as string,
+        formData.get("addTo") as string,
+        group.id,
+      );
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: {
+          name: formData.get("name") as string,
+          email: formData.get("addTo") as string,
+        },
+        level: "error",
+      });
+      throw error;
+    }
 
     queryClient.invalidateQueries({ queryKey: ["groups"] });
   };

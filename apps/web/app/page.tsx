@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { FormEvent, useEffect } from "react";
+import * as Sentry from "@sentry/nextjs";
 
 export default function Home() {
   useEffect(() => {
@@ -27,6 +28,8 @@ export default function Home() {
     );
 
     Cookies.set("token-MS", response.data.accessToken, { expires: 7 });
+
+    Sentry.setUser({ email: formData.get("email") as string });
 
     window.location.href = "/group";
   };
