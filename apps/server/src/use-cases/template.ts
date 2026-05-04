@@ -5,20 +5,30 @@ import { TemplateRepository } from 'src/repositories/template-repository';
 export class TemplateUseCase {
   constructor(private templateRepository: TemplateRepository) {}
 
-  async createTemplate(name: string, content: string) {
-    await this.templateRepository.createTemplate(name, content);
+  async createTemplate(name: string, content: string, userId: string) {
+    await this.templateRepository.createTemplate(name, content, userId);
   }
 
-  async findAllTemplates() {
-    const templates = await this.templateRepository.findAllTemplates();
+  async findAllTemplates(userId: string) {
+    const templates = await this.templateRepository.findAllTemplates(userId);
     return templates;
   }
 
-  async editTemplate(templateId: string, name: string, content: string) {
-    await this.templateRepository.editTemplate(templateId, name, content);
+  async editTemplate(
+    templateId: string,
+    name: string,
+    content: string,
+    userId: string,
+  ) {
+    await this.templateRepository.editTemplate(
+      templateId,
+      name,
+      content,
+      userId,
+    );
   }
 
-  async deleteTemplate(templateId: string) {
-    await this.templateRepository.deleteTemplate(templateId);
+  async deleteTemplate(templateId: string, userId: string) {
+    await this.templateRepository.deleteTemplate(templateId, userId);
   }
 }

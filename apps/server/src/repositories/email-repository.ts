@@ -25,18 +25,28 @@ export class EmailRepository {
     console.log('Email sent successfully:', data);
   }
 
-  async saveEmailHistory(sentTo: string, subject: string, body: string) {
+  async saveEmailHistory(
+    sentTo: string,
+    subject: string,
+    body: string,
+    userId: string,
+  ) {
     await this.prisma.emailHistory.create({
       data: {
         sentTo,
         subject,
         body,
+        userId,
       },
     });
   }
 
-  async getEmailHistory() {
-    const emailHistory = await this.prisma.emailHistory.findMany();
+  async getEmailHistory(userId: string) {
+    const emailHistory = await this.prisma.emailHistory.findMany({
+      where: {
+        userId,
+      },
+    });
     return emailHistory;
   }
 }

@@ -11,14 +11,14 @@ export class EmailUseCase {
     private emailRepository: EmailRepository,
   ) {}
 
-  async sendEmail(to: string, subject: string, html: string) {
+  async sendEmail(to: string, subject: string, html: string, userId: string) {
     await this.emailQueue.add('sendEmail', { to, subject, html });
-    await this.emailRepository.saveEmailHistory(to, subject, html);
+    await this.emailRepository.saveEmailHistory(to, subject, html, userId);
     return { message: 'Email sent successfully' };
   }
 
-  async getEmailHistory() {
-    const emailHistory = await this.emailRepository.getEmailHistory();
+  async getEmailHistory(userId: string) {
+    const emailHistory = await this.emailRepository.getEmailHistory(userId);
     return emailHistory;
   }
 }

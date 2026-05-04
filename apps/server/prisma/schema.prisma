@@ -9,10 +9,15 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
+  id              String            @id @default(uuid())
+  email           String            @unique
+  password        String
+  createdAt       DateTime          @default(now())
+  receiversGroups ReceiversGroups[]
+  groups          Group[]
+  templates       Template[]
+  emailHistories  EmailHistory[]
+  receivers       Receiver[]
 }
 
 model EmailHistory {
@@ -20,6 +25,8 @@ model EmailHistory {
   sentTo  String
   subject String
   body    String
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
 }
 
 model Group {
@@ -27,6 +34,8 @@ model Group {
   name      String
   createdAt DateTime          @default(now())
   receiver  ReceiversGroups[]
+  userId    String?
+  user      User?             @relation(fields: [userId], references: [id])
 }
 
 model Receiver {
@@ -34,13 +43,17 @@ model Receiver {
   email  String            @unique
   name   String
   groups ReceiversGroups[]
+  userId String?
+  user   User?             @relation(fields: [userId], references: [id])
 }
 
 model ReceiversGroups {
   groupId    String
   receiverId String
+  userId     String
   group      Group     @relation(fields: [groupId], references: [id])
   receiver   Receiver? @relation(fields: [receiverId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
 
   @@id([groupId, receiverId])
 }
@@ -50,4 +63,7 @@ model Template {
   name      String
   content   String
   createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 }

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { AuthRepository } from 'src/repositories/auth-repository';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -18,7 +18,7 @@ export class AuthUseCase {
     const existingUser = await this.authRepository.findByEmail(email);
 
     if (existingUser) {
-      throw new Error('User already exists');
+      throw new HttpException('User already exists', 409);
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -34,13 +34,13 @@ export class AuthUseCase {
     const user = await this.authRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error('User not found');
+      throw new HttpException('User not found', 404);
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      throw new Error('Wrong password');
+      throw new HttpException('Wrong password', 401);
     }
 
     const payload = { sub: user.id, email: user.email };

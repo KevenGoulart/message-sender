@@ -5,26 +5,35 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class TemplateRepository {
   constructor(private prisma: PrismaService) {}
 
-  createTemplate(name: string, content: string) {
+  createTemplate(name: string, content: string, userId: string) {
     return this.prisma.template.create({
-      data: { name, content },
+      data: { name, content, userId },
     });
   }
 
-  findAllTemplates() {
-    return this.prisma.template.findMany();
+  findAllTemplates(userId: string) {
+    return this.prisma.template.findMany({
+      where: {
+        userId,
+      },
+    });
   }
 
-  editTemplate(templateId: string, name: string, content: string) {
+  editTemplate(
+    templateId: string,
+    name: string,
+    content: string,
+    userId: string,
+  ) {
     return this.prisma.template.update({
-      where: { id: templateId },
+      where: { id: templateId, userId },
       data: { name, content },
     });
   }
 
-  deleteTemplate(templateId: string) {
+  deleteTemplate(templateId: string, userId: string) {
     return this.prisma.template.delete({
-      where: { id: templateId },
+      where: { id: templateId, userId },
     });
   }
 }

@@ -3,6 +3,7 @@ import { FormEvent } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { createGroup } from "@/services/group";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface CreateGroupDialogProps {
   open: boolean;
@@ -13,12 +14,15 @@ export default function CreateGroupDialog({
   open,
   onOpenChange,
 }: CreateGroupDialogProps) {
+  const queryClient = useQueryClient();
+
   const handleCreateGroup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
 
     await createGroup(formData.get("name") as string);
+    queryClient.invalidateQueries({ queryKey: ["groups"] });
   };
 
   return (

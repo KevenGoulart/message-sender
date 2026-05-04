@@ -22,10 +22,21 @@ export default function Home() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    const response = await loginUser(
-      formData.get("email") as string,
-      formData.get("password") as string,
-    );
+    let response;
+
+    try {
+      response = await loginUser(
+        formData.get("email") as string,
+        formData.get("password") as string,
+      );
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        alert("Usuário não encontrado");
+      } else if (error.response?.status === 401) {
+        alert("Senha incorreta");
+      }
+      return;
+    }
 
     Cookies.set("token-MS", response.data.accessToken, { expires: 7 });
 

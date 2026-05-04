@@ -5,16 +5,20 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class GroupRepository {
   constructor(private prisma: PrismaService) {}
 
-  createGroup(name: string) {
+  createGroup(name: string, userId: string) {
     return this.prisma.group.create({
       data: {
         name,
+        userId,
       },
     });
   }
 
-  findAllGroups() {
+  findAllGroups(userId: string) {
     return this.prisma.group.findMany({
+      where: {
+        userId,
+      },
       include: {
         receiver: {
           include: {
@@ -25,10 +29,16 @@ export class GroupRepository {
     });
   }
 
-  async addToGroup(email: string, name: string, groupId: string) {
+  async addToGroup(
+    email: string,
+    name: string,
+    groupId: string,
+    userId: string,
+  ) {
     const existingReceiver = await this.prisma.receiver.findFirst({
       where: {
         email,
+        userId,
       },
     });
 
@@ -40,6 +50,7 @@ export class GroupRepository {
       data: {
         email,
         name,
+        userId,
       },
     });
 
@@ -47,14 +58,16 @@ export class GroupRepository {
       data: {
         groupId,
         receiverId: receiver.id,
+        userId,
       },
     });
   }
 
-  async removeFromGroup(email: string, groupId: string) {
+  async removeFromGroup(email: string, groupId: string, userId: string) {
     const receiver = await this.prisma.receiver.findUnique({
       where: {
         email,
+        userId,
       },
     });
 

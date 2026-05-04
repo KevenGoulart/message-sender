@@ -3,17 +3,32 @@
 import { FormEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { registerUser } from "@/services/user";
+import { loginUser, registerUser } from "@/services/user";
+import Cookies from "js-cookie";
 
 export default function Register() {
   const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    await registerUser(
+    try {
+      await registerUser(
+        formData.get("email") as string,
+        formData.get("password") as string,
+      );
+    } catch {
+      alert("Email já cadastrado");
+      return;
+    }
+
+    const response = await loginUser(
       formData.get("email") as string,
       formData.get("password") as string,
     );
+
+    Cookies.set("token-MS", response.data.accessToken, { expires: 7 });
+
+    window.location.href = "/group";
   };
 
   return (
